@@ -43,12 +43,10 @@
                       <EmptySpace min="60" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="mb5" pref="81" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="mb4" pref="81" max="32767" attributes="0"/>
-                              <Component id="mb3" max="32767" attributes="0"/>
-                              <Component id="mb1" max="32767" attributes="0"/>
-                              <Component id="mb2" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="mb4" pref="81" max="32767" attributes="0"/>
+                          <Component id="mb3" max="32767" attributes="0"/>
+                          <Component id="mb1" max="32767" attributes="0"/>
+                          <Component id="mb2" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -114,6 +112,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
