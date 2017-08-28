@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+import java.util.Date;
 
 /**
  *
@@ -162,7 +165,38 @@ try{
      String id = mb3.getText();
      String issued = mb4.getText();
      String rno = mb5.getText();
-     String query = "insert into book_info values('"+(name)+"','"+(author)+"','"+(id)+"','"+(issued)+"','"+(rno)+"');";
+     int flag=0;
+     if(issued.equals("yes"))
+     {
+         String query = "select count(*) as count from book_info where rno='"+(rno)+"';";
+         pst=con.prepareStatement(query);
+         ResultSet rs1=null;
+         rs1=pst.executeQuery(query);
+         rs1.next();
+         int count = rs1.getInt("count");
+         System.out.println(count);
+         if(count==4)
+         {
+             JOptionPane.showMessageDialog(null,"You have issued four books for this number already");
+             flag=1;
+         }
+         
+         
+     }
+     if(flag==0)
+     {
+     
+ 
+     Date da = new Date();
+     Calendar c = Calendar.getInstance();
+     c.setTime(da);
+     c.add(Calendar.DATE, 15);
+     Date newDate = c.getTime();
+     java.sql.Date issue_date = new java.sql.Date(da.getTime());
+     java.sql.Date due_date = new java.sql.Date(newDate.getTime());
+     System.out.println(da);
+     System.out.println(newDate);
+     String query = "insert into book_info values('"+(name)+"','"+(author)+"','"+(id)+"','"+(issued)+"','"+(rno)+"','"+(issue_date)+"','"+(due_date)+"');";
      pst=con.prepareStatement(query);
      pst.executeUpdate(query);
      mb1.setText("");
@@ -171,6 +205,7 @@ try{
      mb4.setText("");
      mb5.setText("");   
    }
+}
 catch(Exception e){
     System.out.println(e.getMessage());
     
@@ -186,7 +221,66 @@ catch(Exception e){
      String id = mb3.getText();
      String issued = mb4.getText();
      String rno = mb5.getText();
-     String query = "update book_info set name='"+(name)+"',author='"+(author)+"',id='"+(id)+"',issued='"+(issued)+"',rno='"+(rno)+"' where id='"+(id)+"';";
+     int flag=0,flag2=0;
+     if(issued.equals("yes"))
+     {
+         String query = "select count(*) as count from book_info where rno='"+(rno)+"';";
+         pst=con.prepareStatement(query);
+         ResultSet rs1=null;
+         rs1=pst.executeQuery(query);
+         rs1.next();
+         int count = rs1.getInt("count");
+         System.out.println(count);
+         if(count==4)
+         {
+             JOptionPane.showMessageDialog(null,"You have issued four books for this number already");
+             flag=1;
+         }
+         
+         
+     }
+     
+     
+         if(issued.equals("no"))
+         {
+             String query1 = "select * from book_info where id='"+(id)+"';";
+             pst=con.prepareStatement(query1);
+             ResultSet rs2=null;
+             rs2=pst.executeQuery(query1);
+             rs2.next();
+             java.sql.Date d3 = rs2.getDate("due_date");
+             System.out.println(d3);
+             Date da = new Date();
+             java.sql.Date current_date = new java.sql.Date(da.getTime());
+             long diff = (d3.getTime()-current_date.getTime());
+             System.out.println(diff);
+             if(diff<0)
+             {
+                 long fine = (5*Math.abs(diff));
+                 JOptionPane.showMessageDialog(null,"you have to pay a fine of rupees"+fine);
+                 flag2=1;
+             }
+     String query = "update book_info set name='"+(name)+"',author='"+(author)+"',id='"+(id)+"',issued='"+(issued)+"',rno='"+(rno)+"',issue_date=NULL,due_date=NULL where id='"+(id)+"';";
+     pst=con.prepareStatement(query);
+     pst.executeUpdate(query);
+     mb1.setText("");
+     mb2.setText("");
+     mb3.setText("");
+     mb4.setText("");
+     mb5.setText(""); 
+             
+             
+         }
+     if(flag==0&&issued.equals("yes"))
+     {
+     Date da = new Date();
+     Calendar c = Calendar.getInstance();
+     c.setTime(da);
+     c.add(Calendar.DATE, 15);
+     Date newDate = c.getTime();
+     java.sql.Date issue_date = new java.sql.Date(da.getTime());
+     java.sql.Date due_date = new java.sql.Date(newDate.getTime());
+     String query = "update book_info set name='"+(name)+"',author='"+(author)+"',id='"+(id)+"',issued='"+(issued)+"',rno='"+(rno)+"',issue_date='"+(issue_date)+"',due_date='"+(due_date)+"' where id='"+(id)+"';";
      pst=con.prepareStatement(query);
      pst.executeUpdate(query);
      mb1.setText("");
@@ -195,6 +289,10 @@ catch(Exception e){
      mb4.setText("");
      mb5.setText("");   
    }
+    
+  
+     
+ }
 catch(Exception e){
     System.out.println(e.getMessage());
     
